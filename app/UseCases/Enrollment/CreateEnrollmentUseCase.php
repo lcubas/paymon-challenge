@@ -2,7 +2,7 @@
 
 namespace App\UseCases\Enrollment;
 
-use App\DTOs\CreateEnrollmentDTO;
+use App\DTOs\Enrollment\CreateEnrollmentDTO;
 use App\DTOs\Payments\CreatePaymentDTO;
 use App\Enums\EnrollmentStatus;
 use App\Repositories\Contracts\StudentRepositoryInterface;

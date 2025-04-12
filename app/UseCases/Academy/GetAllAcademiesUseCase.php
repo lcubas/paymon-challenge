@@ -13,8 +13,8 @@ class GetAllAcademiesUseCase
         $this->academyRepository = $academyRepository;
     }
 
-    public function execute(): array
+    public function execute()
     {
-        return $this->academyRepository->all();
+        return $this->academyRepository->getWithCourses();
     }
 }

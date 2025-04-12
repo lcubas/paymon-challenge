@@ -1,6 +1,9 @@
 <?php
 
+use App\Livewire\Academies\AcademyList;
 use Illuminate\Support\Facades\Route;
+
+use App\Livewire\Enrollments\CreateEnrollment;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +16,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', AcademyList::class)->name('home');
+Route::get('/enroll', CreateEnrollment::class)->name('enroll');

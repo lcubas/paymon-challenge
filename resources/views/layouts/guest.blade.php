@@ -15,17 +15,12 @@
                 <div class="flex items-center">
                     <h1 class="text-xl font-bold text-emerald-400">{{ config('app.name') }}</h1>
                 </div>
-                <!-- <div class="flex items-center space-x-4">
-                    <a href="#" class="text-emerald-200/90 hover:text-emerald-100">Inicio</a>
-                    <a href="#" class="text-emerald-200/90 hover:text-emerald-100">Nosotros</a>
-                    <a href="#" class="px-4 py-2 rounded-md bg-emerald-700 text-emerald-50 hover:bg-emerald-600 transition duration-200">Matricular</a>
-                </div> -->
             </div>
         </div>
     </nav>
 
     <main class="min-h-screen">
-        <livewire:academies.academy-list />
+        {{ $slot }}
     </main>
 
     <footer class="bg-gray-800/50 border-t border-emerald-900/30 py-8 mt-12">
