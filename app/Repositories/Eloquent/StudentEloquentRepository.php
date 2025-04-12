@@ -2,17 +2,17 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Academy;
+use App\Models\Student;
 use App\Repositories\Contracts\StudentRepositoryInterface;
 
 class StudentEloquentRepository extends BaseEloquentRepository implements StudentRepositoryInterface
 {
     /**
-     * AcademyEloquentRepository constructor.
+     * StudentEloquentRepository constructor.
      *
-     * @param Academy $model
+     * @param Student $model
      */
-    public function __construct(Academy $model)
+    public function __construct(Student $model)
     {
         parent::__construct($model);
     }

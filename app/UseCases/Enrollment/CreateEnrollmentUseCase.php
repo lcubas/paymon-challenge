@@ -25,23 +25,23 @@ class CreateEnrollmentUseCase
         $this->courseRepository = $courseRepository;
     }
 
-    public function execute(EnrollmentDTO $enrollmentData): Enrollment
+    public function execute(EnrollmentDTO $enrollment): Enrollment
     {
-        $student = $this->studentRepository->find($enrollmentData->studentId);
+        $student = $this->studentRepository->find($enrollment->studentId);
 
         if (!$student) {
             throw new Exception('Student not found');
         }
 
-        $course = $this->courseRepository->find($enrollmentData->courseId);
+        $course = $this->courseRepository->find($enrollment->courseId);
 
         if (!$course) {
             throw new Exception('Course not found');
         }
 
         $existingEnrollment = $this->enrollmentRepository->findByCriteria([
-            'course_id' => $enrollmentData->courseId,
-            'student_id' => $enrollmentData->studentId,
+            'course_id' => $enrollment->courseId,
+            'student_id' => $enrollment->studentId,
         ]);
 
         if ($existingEnrollment) {
@@ -49,8 +49,8 @@ class CreateEnrollmentUseCase
         }
 
         $enrollment = $this->enrollmentRepository->create([
-            'course_id' => $enrollmentData->courseId,
-            'student_id' => $enrollmentData->studentId,
+            'course_id' => $enrollment->courseId,
+            'student_id' => $enrollment->studentId,
             'enrolled_at' => now(),
             'status' => 'active',
         ]);
