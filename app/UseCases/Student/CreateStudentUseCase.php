@@ -27,10 +27,6 @@ class CreateStudentUseCase
             throw new Exception('El tutor legal no existe');
         }
 
-        if (empty($student->first_name) || empty($student->last_name) || empty($student->birth_date)) {
-            throw new Exception('Todos los campos obligatorios deben estar completos');
-        }
-
         return $this->studentRepository->create([
             'legal_guardian_id' => $student->legalGuardianId,
             'first_name' => $student->firstName,

@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Academies\AcademyList;
+use App\Livewire\Communications\CreateCommunication;
 use Illuminate\Support\Facades\Route;
 
 use App\Livewire\Enrollments\CreateEnrollment;
@@ -17,4 +18,6 @@ use App\Livewire\Enrollments\CreateEnrollment;
 */
 
 Route::get('/', AcademyList::class)->name('home');
-Route::get('/enroll', CreateEnrollment::class)->name('enroll');
+Route::get('/courses/{courseId}/enroll', CreateEnrollment::class)->name('courses.enroll');
+Route::get('/communications/create', CreateCommunication::class)->name('communications.create');
+Route::get('/payments/{enrollment}/process', \App\Livewire\Payments\ProcessPayment::class)->name('payments.process');

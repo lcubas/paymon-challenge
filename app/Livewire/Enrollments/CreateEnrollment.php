@@ -4,9 +4,8 @@ namespace App\Livewire\Enrollments;
 
 use App\DTOs\Enrollment\CreateEnrollmentDTO;
 use App\DTOs\Enrollment\StudentForCreateEnrollmentDTO;
-use App\Enums\PaymentMethod;
 use App\Models\Course;
-use App\UseCases\Course\GetCourseUseCase;
+use App\UseCases\Course\GetCourseByIdUseCase;
 use App\UseCases\Enrollment\CreateEnrollmentUseCase;
 use Livewire\Component;
 
@@ -22,44 +21,47 @@ class CreateEnrollment extends Component
         'firstName' => 'required|min:2',
         'lastName' => 'required|min:2',
         'birthDate' => 'required|date|before:today',
-        'paymentMethod' => 'required|in:CASH,BANK_TRANSFER'
     ];
 
-    private GetCourseUseCase $getCourseUseCase;
+    private GetCourseByIdUseCase $getCourseByIdUseCase;
     private CreateEnrollmentUseCase $createEnrollmentUseCase;
 
-    public function mount(
-        GetCourseUseCase $getCourseUseCase,
-        CreateEnrollmentUseCase $createEnrollmentUseCase
+    public function boot(
+        GetCourseByIdUseCase $getCourseByIdUseCase,
+        CreateEnrollmentUseCase $createEnrollmentUseCase,
     ) {
-        $this->getCourseUseCase = $getCourseUseCase;
+        $this->getCourseByIdUseCase = $getCourseByIdUseCase;
         $this->createEnrollmentUseCase = $createEnrollmentUseCase;
+    }
 
-        $courseId = request()->get('courseId');
-        $this->course = $this->getCourseUseCase->execute($courseId);
+    public function mount(int $courseId)
+    {
+        $this->course = $this->getCourseByIdUseCase->execute($courseId);
     }
 
     public function submit()
     {
         $this->validate();
+        $legalGuardianId = 1; // TODO: get from auth user
 
         try {
-            $studentDTO = new StudentForCreateEnrollmentDTO(
+            $student = new StudentForCreateEnrollmentDTO(
                 firstName: $this->firstName,
                 lastName: $this->lastName,
-                birthDate: $this->birthDate
+                birthDate: $this->birthDate,
+                legalGuardianId: $legalGuardianId,
             );
 
-            $enrollmentDTO = new CreateEnrollmentDTO(
+            $enrollment = new CreateEnrollmentDTO(
                 courseId: $this->course->id,
-                student: $studentDTO,
-                paymentMethod: PaymentMethod::from($this->paymentMethod)
+                student: $student,
             );
 
-            $this->createEnrollmentUseCase->execute($enrollmentDTO);
+            $this->createEnrollmentUseCase->execute($enrollment);
 
-            session()->flash('message', 'Matrícula realizada con éxito');
-            return redirect()->route('home');
+            return redirect()
+                ->route('home')
+                ->with('success', 'Matrícula realizada con éxito');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al procesar la matrícula: ' . $e->getMessage());
         }

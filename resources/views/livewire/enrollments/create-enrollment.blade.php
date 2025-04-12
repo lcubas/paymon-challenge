@@ -61,21 +61,6 @@
                             <input type="date" wire:model="birthDate" class="w-full bg-gray-900/40 border border-emerald-700/30 rounded-lg text-white px-4 py-2.5 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500">
                             @error('birthDate') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
                         </div>
-
-                        <div>
-                            <label class="block text-emerald-100 mb-2">Método de Pago</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center p-3 bg-gray-900/40 rounded-lg border border-emerald-700/30 cursor-pointer hover:border-emerald-500 transition-all duration-300">
-                                    <input type="radio" wire:model="paymentMethod" value="CASH" class="w-4 h-4 text-emerald-500 bg-gray-900 border-emerald-700/30 focus:ring-emerald-500 focus:ring-offset-0">
-                                    <span class="ml-3 text-white">Efectivo</span>
-                                </label>
-                                <label class="flex items-center p-3 bg-gray-900/40 rounded-lg border border-emerald-700/30 cursor-pointer hover:border-emerald-500 transition-all duration-300">
-                                    <input type="radio" wire:model="paymentMethod" value="BANK_TRANSFER" class="w-4 h-4 text-emerald-500 bg-gray-900 border-emerald-700/30 focus:ring-emerald-500 focus:ring-offset-0">
-                                    <span class="ml-3 text-white">Transferencia Bancaria</span>
-                                </label>
-                            </div>
-                            @error('paymentMethod') <span class="text-red-500 text-sm mt-1">{{ $message }}</span> @enderror
-                        </div>
                     </div>
 
                     <div class="pt-6 flex items-center justify-end gap-4">

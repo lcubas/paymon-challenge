@@ -47,11 +47,20 @@ interface BaseRepositoryInterface
     public function delete(int $id): bool;
 
     /**
-     * Find records based on criteria.
+     * Find one record based on criteria.
      *
      * @param array $criteria
      * @param array $relations
      * @return mixed
      */
     public function findByCriteria(array $criteria, array $relations = []);
+
+    /**
+     * Find records based on criteria.
+     *
+     * @param array $criteria
+     * @param array $relations
+     * @return mixed
+     */
+    public function getByCriteria(array $criteria, array $relations = []);
 }

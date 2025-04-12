@@ -6,7 +6,6 @@ use App\Repositories\Contracts\CommunicationRepositoryInterface;
 use App\Repositories\Contracts\LegalGuardianRepositoryInterface;
 use App\DTOs\CommunicationDTO;
 use App\Models\Communication;
-use Exception;
 
 class SendCommunicationUseCase
 {
@@ -23,20 +22,10 @@ class SendCommunicationUseCase
 
     public function execute(CommunicationDTO $communication): Communication
     {
-        if (empty($communication->courseId)) {
-            throw new Exception('Debe proporcionar un curso');
-        }
-
-        $guardians = [];
-
-        // TODO: Missing association between communication and guardians
-        if (!empty($communication->course_id)) {
-            $guardians = $this->legalGuardianRepository->findByCriteria([
-                'course_id' => $communication->courseId,
-            ]);
-        }
+        $guardians = $this->legalGuardianRepository->findByCourseId($communication->courseId);
 
         // TODO: Implements email sending logic or some other communication method
+        // TODO: May be necessary to implement a queue for sending emails or scheduling tasks
         foreach ($guardians as $guardian) {
             info("Enviando comunicado a {$guardian->email}: {$communication->title}");
         }
@@ -45,7 +34,7 @@ class SendCommunicationUseCase
         $communication = $this->communicationRepository->create([
             'title' => $communication->title,
             'message' => $communication->message,
-            'sent_at' => now(),
+            'sent_at' => time(),
             'course_id' => $communication->courseId,
         ]);
 

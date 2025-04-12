@@ -82,6 +82,20 @@ abstract class BaseEloquentRepository implements BaseRepositoryInterface
             $query->where($key, $value);
         }
 
+        return $query->first();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getByCriteria(array $criteria, array $relations = [])
+    {
+        $query = $this->model->with($relations);
+
+        foreach ($criteria as $key => $value) {
+            $query->where($key, $value);
+        }
+
         return $query->get();
     }
 }

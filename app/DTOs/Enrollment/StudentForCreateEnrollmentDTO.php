@@ -4,8 +4,11 @@ namespace App\DTOs\Enrollment;
 
 class StudentForCreateEnrollmentDTO
 {
-    public string $firstName;
-    public string $lastName;
-    public string $birthDate;
+    public function __construct(
+        public readonly string $firstName,
+        public readonly string $lastName,
+        public readonly string $birthDate,
+        public readonly int $legalGuardianId,
+    ) {}
 }
 

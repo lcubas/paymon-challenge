@@ -9,14 +9,21 @@ class AcademyList extends Component
 {
     public $academies = [];
 
-    public function mount(GetAllAcademiesUseCase $getAllAcademiesUseCase)
+    private readonly GetAllAcademiesUseCase $getAllAcademiesUseCase;
+
+    public function boot(GetAllAcademiesUseCase $getAllAcademiesUseCase)
     {
-        $this->academies = $getAllAcademiesUseCase->execute();
+        $this->getAllAcademiesUseCase = $getAllAcademiesUseCase;
+    }
+
+    public function mount()
+    {
+        $this->academies = $this->getAllAcademiesUseCase->execute();
     }
 
     public function startEnrollment($courseId)
     {
-        return redirect()->route('enroll', ['courseId' => $courseId]);
+        return redirect()->route('courses.enroll', ['courseId' => $courseId]);
     }
 
     public function render()

@@ -15,8 +15,8 @@ enum PaymentMethod: string
     public function label(): string
     {
         return match ($this) {
-            self::CASH => 'Pending',
-            self::BANK_TRANSFER => 'Paid',
+            self::CASH => 'Efectivo',
+            self::BANK_TRANSFER => 'Transferencia bancaria',
         };
     }
 }

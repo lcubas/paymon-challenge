@@ -20,8 +20,8 @@ class Student extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'date_of_birth',
-        'guardian_id',
+        'birth_date',
+        'legal_guardian_id',
     ];
 
     /**
@@ -30,15 +30,15 @@ class Student extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'date_of_birth' => 'date',
+        'birth_date' => 'date',
     ];
 
     /**
      * Get the guardian that owns the student.
      */
-    public function guardian(): BelongsTo
+    public function legalGuardian(): BelongsTo
     {
-        return $this->belongsTo(Guardian::class);
+        return $this->belongsTo(LegalGuardian::class);
     }
 
     /**
@@ -62,7 +62,7 @@ class Student extends Model
      */
     public function getAgeAttribute(): int
     {
-        return $this->date_of_birth->diffInYears(Carbon::now());
+        return $this->birth_date->diffInYears(Carbon::now());
     }
 
     /**
