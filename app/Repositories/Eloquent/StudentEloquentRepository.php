@@ -16,5 +16,10 @@ class StudentEloquentRepository extends BaseEloquentRepository implements Studen
     {
         parent::__construct($model);
     }
+
+    public function findOrCreate(array $attributes): Student
+    {
+        return $this->model->firstOrCreate($attributes);
+    }
 }
 

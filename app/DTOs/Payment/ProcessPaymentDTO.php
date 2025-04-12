@@ -2,11 +2,9 @@
 
 namespace App\DTOs;
 
-class PaymentDTO
+class ProcessPaymentDTO
 {
+    public int $paymentId;
     public int $enrollmentId;
-    public float $amount;
-    public string $method;
     public ?string $transactionReference;
 }
-

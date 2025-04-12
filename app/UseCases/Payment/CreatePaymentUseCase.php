@@ -4,12 +4,12 @@ namespace App\UseCases\Payment;
 
 use App\Repositories\Contracts\PaymentRepositoryInterface;
 use App\Repositories\Contracts\EnrollmentRepositoryInterface;
-use App\DTOs\PaymentDTO;
+use App\DTOs\Payments\CreatePaymentDTO;
 use App\Enums\PaymentStatus;
 use App\Models\Payment;
 use Exception;
 
-class ProcessPaymentUseCase
+class CreatePaymentUseCase
 {
     protected $paymentRepository;
     protected $enrollmentRepository;
@@ -22,7 +22,7 @@ class ProcessPaymentUseCase
         $this->enrollmentRepository = $enrollmentRepository;
     }
 
-    public function execute(PaymentDTO $payment): Payment
+    public function execute(CreatePaymentDTO $payment): Payment
     {
         $enrollment = $this->enrollmentRepository->find($payment->enrollmentId);
 
@@ -30,10 +30,11 @@ class ProcessPaymentUseCase
             throw new Exception('Enrollment not found');
         }
 
-        $payment = $this->paymentRepository->update($payment->paymentId, [
-            'paid_at' => now(),
-            'status' => PaymentStatus::PAID,
-            'transaction_reference' => $payment->transactionReference,
+        $payment = $this->paymentRepository->create([
+            'enrollment_id' => $payment->enrollmentId,
+            'amount' => $enrollment->course->price,
+            'payment_method' => $payment->paymentMethod,
+            'status' => PaymentStatus::PENDING,
         ]);
 
         return $payment;

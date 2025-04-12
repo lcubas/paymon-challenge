@@ -2,60 +2,82 @@
 
 namespace App\UseCases\Enrollment;
 
-use App\Repositories\Contracts\EnrollmentRepositoryInterface;
+use App\DTOs\CreateEnrollmentDTO;
+use App\DTOs\Payments\CreatePaymentDTO;
+use App\Enums\EnrollmentStatus;
 use App\Repositories\Contracts\StudentRepositoryInterface;
 use App\Repositories\Contracts\CourseRepositoryInterface;
-use App\DTOs\EnrollmentDTO;
-use App\Models\Enrollment;
-use Exception;
+use App\Repositories\Contracts\EnrollmentRepositoryInterface;
+use App\UseCases\Payment\CreatePaymentUseCase;
+use Error;
+use Illuminate\Support\Facades\DB;
 
 class CreateEnrollmentUseCase
 {
-    protected $enrollmentRepository;
-    protected $studentRepository;
-    protected $courseRepository;
+    private $studentRepository;
+    private $courseRepository;
+    private $enrollmentRepository;
+    private $createPaymentUseCase;
 
     public function __construct(
-        EnrollmentRepositoryInterfacE $enrollmentRepository,
+        CourseRepositoryInterface $courseRepository,
         StudentRepositoryInterface $studentRepository,
-        CourseRepositoryInterface $courseRepository
+        EnrollmentRepositoryInterface $enrollmentRepository,
+        CreatePaymentUseCase $createPaymentUseCase
     ) {
-        $this->enrollmentRepository = $enrollmentRepository;
         $this->studentRepository = $studentRepository;
         $this->courseRepository = $courseRepository;
+        $this->enrollmentRepository = $enrollmentRepository;
+        $this->createPaymentUseCase = $createPaymentUseCase;
     }
 
-    public function execute(EnrollmentDTO $enrollment): Enrollment
+    public function execute(CreateEnrollmentDTO $createEnrollment)
     {
-        $student = $this->studentRepository->find($enrollment->studentId);
+        $course = $this->courseRepository->find($createEnrollment->courseId);
 
-        if (!$student) {
-            throw new Exception('Student not found');
-        }
-
-        $course = $this->courseRepository->find($enrollment->courseId);
-
+        // TODO: Some courses may have a limit of students or any other criteria to be enrolled
         if (!$course) {
-            throw new Exception('Course not found');
+            throw new Error('El curso no está disponible.');
         }
+
+        // TODO: Validate if the guardian is authorized to enroll the student
+        // TODO: Improve the search criteria and search by truly unique fields like email, phone, etc.
+        $student = $this->studentRepository->findOrCreate([
+            'first_name' => $createEnrollment->student->firstName,
+            'last_name' => $createEnrollment->student->lastName,
+            'birth_date' => $createEnrollment->student->birthDate,
+        ]);
 
         $existingEnrollment = $this->enrollmentRepository->findByCriteria([
-            'course_id' => $enrollment->courseId,
-            'student_id' => $enrollment->studentId,
+            'course_id' => $createEnrollment->courseId,
+            'student_id' => $student->id,
         ]);
 
         if ($existingEnrollment) {
-            throw new Exception('Enrollment already exists');
+            throw new Error('Enrollment already exists');
         }
 
-        $enrollment = $this->enrollmentRepository->create([
-            'course_id' => $enrollment->courseId,
-            'student_id' => $enrollment->studentId,
-            'enrolled_at' => now(),
-            'status' => 'active',
-        ]);
+        DB::beginTransaction();
+
+        try {
+            $enrollment = $this->enrollmentRepository->create([
+                'student_id' => $student->id,
+                'course_id' => $createEnrollment->courseId,
+                'status' => EnrollmentStatus::ACTIVE,
+            ]);
+
+            $this->createPaymentUseCase->execute(new CreatePaymentDTO(
+                $enrollment->id,
+                $course->price,
+                $createEnrollment->paymentMethod,
+            ));
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
 
         return $enrollment;
     }
 }
-
