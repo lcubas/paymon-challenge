@@ -27,7 +27,7 @@ class AcademyList extends Component
         return redirect()->route('courses.enroll', ['courseId' => $courseId]);
     }
 
-    #[Layout('layouts.guest')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.pages.academies.academy-list');

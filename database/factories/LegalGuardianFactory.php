@@ -20,6 +20,7 @@ class LegalGuardianFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
+            'user_id' => 1,
         ];
     }
 }

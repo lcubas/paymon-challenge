@@ -7,6 +7,7 @@ use App\UseCases\Course\GetCourseByIdUseCase;
 use App\UseCases\Enrollment\CreateEnrollmentUseCase;
 use App\UseCases\Enrollment\DTOs\CreateEnrollmentDTO;
 use App\UseCases\Enrollment\DTOs\StudentForCreateEnrollmentDTO;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -43,14 +44,19 @@ class CreateEnrollment extends Component
     public function submit()
     {
         $this->validate();
-        $legalGuardianId = 1; // TODO: get from auth user
 
         try {
+            $legalGuardian = Auth::user()->legalGuardian;
+
+            if (!$legalGuardian) {
+                throw new \Exception('Legal guardian profile not found');
+            }
+
             $student = new StudentForCreateEnrollmentDTO(
                 firstName: $this->firstName,
                 lastName: $this->lastName,
                 birthDate: $this->birthDate,
-                legalGuardianId: $legalGuardianId,
+                legalGuardianId: $legalGuardian->id,
             );
 
             $enrollment = new CreateEnrollmentDTO(
@@ -61,14 +67,14 @@ class CreateEnrollment extends Component
             $this->createEnrollmentUseCase->execute($enrollment);
 
             return redirect()
-                ->route('home')
+                ->route('courses.index')
                 ->with('success', 'Matrícula realizada con éxito');
         } catch (\Exception $e) {
             session()->flash('error', 'Error al procesar la matrícula: ' . $e->getMessage());
         }
     }
 
-    #[Layout('layouts.guest')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.pages.enrollments.create-enrollment');

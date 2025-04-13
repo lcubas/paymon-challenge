@@ -51,7 +51,7 @@ class ProcessPayment extends Component
         }
     }
 
-    #[Layout('layouts.guest')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.pages.payments.process-payment');

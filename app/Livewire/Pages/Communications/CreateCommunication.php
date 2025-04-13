@@ -68,7 +68,7 @@ class CreateCommunication extends Component
         }
     }
 
-    #[Layout('layouts.guest')]
+    #[Layout('layouts.app')]
     public function render()
     {
         return view('livewire.pages.communications.create-communication');

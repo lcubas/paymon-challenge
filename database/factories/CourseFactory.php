@@ -19,7 +19,7 @@ class CourseFactory extends Factory
         return [
             'academy_id' => 1,
             'name' => fake()->jobTitle(),
-            'description' => fake()->paragraph(),
+            'description' => fake()->paragraph(rand(5, 8)),
             'cost' => fake()->randomFloat(2, 100, 500),
             'duration_hours' => fake()->numberBetween(10, 100),
         ];

@@ -56,7 +56,7 @@
                         <div class="flex items-center gap-4">
                             <x-primary-button>{{ __('Confirm Enrollment') }}</x-primary-button>
 
-                            <x-secondary-button href="{{ route('home') }}" wire:navigate>
+                            <x-secondary-button href="{{ route('courses.index') }}" wire:navigate>
                                 {{ __('Cancel') }}
                             </x-secondary-button>
                         </div>

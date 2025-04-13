@@ -21,35 +21,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
-
         Academy::factory(2)->has(
             Course::factory(4)
         )->create();
 
-        LegalGuardian::factory(5)->has(
-            Student::factory(rand(1, 3))->has(
-                Enrollment::factory()
-                    ->count(1)
-                    ->state(function (array $attributes, \App\Models\Student $student) {
-                        return [
-                            'course_id' => Course::inRandomOrder()->first()->id,
-                        ];
-                    })
-            )
-        )->create();
+        User::factory(5)->create()->each(function ($user) {
+            LegalGuardian::factory()
+                ->for($user)
+                ->has(
+                    Student::factory()
+                        ->count(rand(1, 3)) // rand dentro de la llamada
+                        ->has(
+                            Enrollment::factory()
+                                ->state(function (array $attributes, \App\Models\Student $student) {
+                                    return [
+                                        'course_id' => Course::inRandomOrder()->first()->id,
+                                    ];
+                                })
+                        )
+                )
+                ->create();
+        });
 
         Enrollment::with('course')->get()->each(function ($enrollment) {
             if (EnrollmentStatus::COMPLETED === $enrollment->status) {
                 Payment::factory()->create([
-                    'enrollment_id' => $enrollment->id,
-                    'amount' => $enrollment->course?->cost ?? 100,
                     'paid_at' => now(),
+                    'enrollment_id' => $enrollment->id,
+                    'amount' => $enrollment->course->cost,
                 ]);
             }
         });
