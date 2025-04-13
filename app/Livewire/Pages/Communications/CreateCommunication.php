@@ -5,6 +5,7 @@ namespace App\Livewire\Pages\Communications;
 use App\UseCases\Communication\DTOs\SendCommunicationDTO;
 use App\UseCases\Communication\SendCommunicationUseCase;
 use App\UseCases\Course\GetCoursesUseCase;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class CreateCommunication extends Component
@@ -44,18 +45,7 @@ class CreateCommunication extends Component
 
     private function loadCourses()
     {
-        $courses = $this->getCoursesUseCase->execute();
-
-        if (empty($this->search)) {
-            $this->courses = $courses->all();
-            return;
-        }
-
-        $searchTerm = strtolower($this->search);
-        $this->courses = $courses->filter(function($course) use ($searchTerm) {
-            return str_contains(strtolower($course->name), $searchTerm) ||
-                str_contains(strtolower($course->description), $searchTerm);
-        })->values()->all();
+        $this->courses = $this->getCoursesUseCase->execute();
     }
 
     public function submit(SendCommunicationUseCase $sendCommunicationUseCase)
@@ -68,11 +58,6 @@ class CreateCommunication extends Component
                 message: $this->message,
                 courseId: $this->courseId,
             );
-            // $communicationDTO->title = $this->title;
-            // $communicationDTO->message = $this->message;
-            // $communicationDTO->courseId = $this->courseId ?: null;
-            // $communicationDTO->minAge = $this->minAge ?: null;
-            // $communicationDTO->maxAge = $this->maxAge ?: null;
 
             $sendCommunicationUseCase->execute($communicationDTO);
 
@@ -83,8 +68,9 @@ class CreateCommunication extends Component
         }
     }
 
+    #[Layout('layouts.guest')]
     public function render()
     {
-        return view('livewire.communications.create-communication');
+        return view('livewire.pages.communications.create-communication');
     }
 }

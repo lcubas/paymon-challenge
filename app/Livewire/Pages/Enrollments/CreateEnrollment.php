@@ -7,6 +7,7 @@ use App\UseCases\Course\GetCourseByIdUseCase;
 use App\UseCases\Enrollment\CreateEnrollmentUseCase;
 use App\UseCases\Enrollment\DTOs\CreateEnrollmentDTO;
 use App\UseCases\Enrollment\DTOs\StudentForCreateEnrollmentDTO;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class CreateEnrollment extends Component
@@ -67,8 +68,9 @@ class CreateEnrollment extends Component
         }
     }
 
+    #[Layout('layouts.guest')]
     public function render()
     {
-        return view('livewire.enrollments.create-enrollment');
+        return view('livewire.pages.enrollments.create-enrollment');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Academies;
 
 use Livewire\Component;
 use App\UseCases\Academy\GetAllAcademiesUseCase;
+use Livewire\Attributes\Layout;
 
 class AcademyList extends Component
 {
@@ -26,13 +27,9 @@ class AcademyList extends Component
         return redirect()->route('courses.enroll', ['courseId' => $courseId]);
     }
 
+    #[Layout('layouts.guest')]
     public function render()
     {
-        return view('livewire.academies.academy-list');
-    }
-
-    public function layout()
-    {
-        return 'layouts.guest';
+        return view('livewire.pages.academies.academy-list');
     }
 }

@@ -8,6 +8,7 @@ use App\UseCases\Payment\CreatePaymentUseCase;
 use App\UseCases\Payment\DTOs\CreatePaymentDTO;
 use Livewire\Component;
 use Illuminate\Validation\Rules\Enum;
+use Livewire\Attributes\Layout;
 
 class ProcessPayment extends Component
 {
@@ -50,8 +51,9 @@ class ProcessPayment extends Component
         }
     }
 
+    #[Layout('layouts.guest')]
     public function render()
     {
-        return view('livewire.payments.process-payment');
+        return view('livewire.pages.payments.process-payment');
     }
 }
