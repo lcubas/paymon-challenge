@@ -8,12 +8,9 @@ use Exception;
 
 class CancelEnrollmentUseCase
 {
-    protected $enrollmentRepository;
-
-    public function __construct(EnrollmentRepositoryInterface $enrollmentRepository)
-    {
-        $this->enrollmentRepository = $enrollmentRepository;
-    }
+    public function __construct(
+        private readonly EnrollmentRepositoryInterface $enrollmentRepository,
+    ) {}
 
     public function execute(int $enrollmentId): void
     {

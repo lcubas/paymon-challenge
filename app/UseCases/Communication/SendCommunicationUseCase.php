@@ -9,16 +9,10 @@ use App\UseCases\Communication\DTOs\SendCommunicationDTO;
 
 class SendCommunicationUseCase
 {
-    protected $communicationRepository;
-    protected $legalGuardianRepository;
-
     public function __construct(
-        CommunicationRepositoryInterface $communicationRepository,
-        LegalGuardianRepositoryInterface $legalGuardianRepository
-    ) {
-        $this->communicationRepository = $communicationRepository;
-        $this->legalGuardianRepository = $legalGuardianRepository;
-    }
+        private readonly CommunicationRepositoryInterface $communicationRepository,
+        private readonly LegalGuardianRepositoryInterface $legalGuardianRepository,
+    ) {}
 
     public function execute(SendCommunicationDTO $communication): Communication
     {

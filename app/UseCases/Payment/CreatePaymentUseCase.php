@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\DB;
 class CreatePaymentUseCase
 {
     public function __construct(
-        protected PaymentRepositoryInterface $paymentRepository,
-        protected EnrollmentRepositoryInterface $enrollmentRepository,
-        protected PaymentProcessorService $paymentProcessor
+        private readonly PaymentRepositoryInterface $paymentRepository,
+        private readonly EnrollmentRepositoryInterface $enrollmentRepository,
+        private readonly PaymentProcessorService $paymentProcessor,
     ) {}
 
     public function execute(CreatePaymentDTO $paymentDTO): Payment

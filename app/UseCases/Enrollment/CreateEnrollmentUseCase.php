@@ -11,19 +11,11 @@ use Error;
 
 class CreateEnrollmentUseCase
 {
-    private $studentRepository;
-    private $courseRepository;
-    private $enrollmentRepository;
-
     public function __construct(
-        CourseRepositoryInterface $courseRepository,
-        StudentRepositoryInterface $studentRepository,
-        EnrollmentRepositoryInterface $enrollmentRepository,
-    ) {
-        $this->studentRepository = $studentRepository;
-        $this->courseRepository = $courseRepository;
-        $this->enrollmentRepository = $enrollmentRepository;
-    }
+        private readonly CourseRepositoryInterface $courseRepository,
+        private readonly StudentRepositoryInterface $studentRepository,
+        private readonly EnrollmentRepositoryInterface $enrollmentRepository,
+    ) {}
 
     public function execute(CreateEnrollmentDTO $enrollment)
     {

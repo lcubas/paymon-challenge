@@ -4,18 +4,14 @@ namespace App\UseCases\Course;
 
 use App\Repositories\Contracts\CourseRepositoryInterface;
 use App\UseCases\Course\DTOs\CourseFilterDTO;
-use Illuminate\Support\Collection;
 
 class GetCoursesUseCase
 {
-    private CourseRepositoryInterface $courseRepository;
+    public function __construct(
+        private readonly CourseRepositoryInterface $courseRepository
+    ) {}
 
-    public function __construct(CourseRepositoryInterface $courseRepository)
-    {
-        $this->courseRepository = $courseRepository;
-    }
-
-    public function execute(?CourseFilterDTO $filters = null): Collection
+    public function execute(?CourseFilterDTO $filters = null)
     {
         if (!$filters) {
             return $this->courseRepository->all();;

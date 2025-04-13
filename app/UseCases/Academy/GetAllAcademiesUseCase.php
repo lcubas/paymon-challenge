@@ -6,12 +6,9 @@ use App\Repositories\Contracts\AcademyRepositoryInterface;
 
 class GetAllAcademiesUseCase
 {
-    protected $academyRepository;
-
-    public function __construct(AcademyRepositoryInterface $academyRepository)
-    {
-        $this->academyRepository = $academyRepository;
-    }
+    public function __construct(
+        private readonly AcademyRepositoryInterface $academyRepository,
+    ) {}
 
     public function execute()
     {
