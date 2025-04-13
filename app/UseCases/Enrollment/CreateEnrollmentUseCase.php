@@ -2,12 +2,11 @@
 
 namespace App\UseCases\Enrollment;
 
-use App\DTOs\Enrollment\CreateEnrollmentDTO;
 use App\Enums\EnrollmentStatus;
 use App\Repositories\Contracts\StudentRepositoryInterface;
 use App\Repositories\Contracts\CourseRepositoryInterface;
 use App\Repositories\Contracts\EnrollmentRepositoryInterface;
-use App\UseCases\Payment\CreatePaymentUseCase;
+use App\UseCases\Enrollment\DTOs\CreateEnrollmentDTO;
 use Error;
 
 class CreateEnrollmentUseCase

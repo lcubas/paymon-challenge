@@ -2,8 +2,8 @@
 
 namespace App\UseCases\Course;
 
-use App\DTOs\Course\CourseFilterDTO;
 use App\Repositories\Contracts\CourseRepositoryInterface;
+use App\UseCases\Course\DTOs\CourseFilterDTO;
 use Illuminate\Support\Collection;
 
 class GetCoursesUseCase

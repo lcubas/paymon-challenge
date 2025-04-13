@@ -2,12 +2,13 @@
 
 namespace App\Services;
 
-use App\DTOs\Payment\CreatePaymentDTO;
 use App\Enums\PaymentMethod;
+use App\UseCases\Payment\DTOs\CreatePaymentDTO;
 use Exception;
 
 class PaymentProcessorService
 {
+    // TODO: Implement his own dto
     public function processPayment(CreatePaymentDTO $paymentDTO): array
     {
         return match($paymentDTO->paymentMethod) {

@@ -4,10 +4,10 @@ namespace App\UseCases\Payment;
 
 use App\Repositories\Contracts\PaymentRepositoryInterface;
 use App\Repositories\Contracts\EnrollmentRepositoryInterface;
-use App\DTOs\Payment\CreatePaymentDTO;
 use App\Enums\PaymentStatus;
 use App\Models\Payment;
 use App\Services\PaymentProcessorService;
+use App\UseCases\Payment\DTOs\CreatePaymentDTO;
 use Exception;
 
 class CreatePaymentUseCase

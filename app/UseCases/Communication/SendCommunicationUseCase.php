@@ -4,8 +4,8 @@ namespace App\UseCases\Communication;
 
 use App\Repositories\Contracts\CommunicationRepositoryInterface;
 use App\Repositories\Contracts\LegalGuardianRepositoryInterface;
-use App\DTOs\CommunicationDTO;
 use App\Models\Communication;
+use App\UseCases\Communication\DTOs\SendCommunicationDTO;
 
 class SendCommunicationUseCase
 {
@@ -20,7 +20,7 @@ class SendCommunicationUseCase
         $this->legalGuardianRepository = $legalGuardianRepository;
     }
 
-    public function execute(CommunicationDTO $communication): Communication
+    public function execute(SendCommunicationDTO $communication): Communication
     {
         $guardians = $this->legalGuardianRepository->findByCourseId($communication->courseId);
 
