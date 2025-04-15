@@ -97,19 +97,6 @@ Content-Type: application/json
     "email": "user@example.com",
     "password": "password"
 }
-
-Response:
-{
-    "data": {
-        "token": "your-api-token",
-        "user": {
-            "id": 1,
-            "email": "user@example.com",
-            ...
-        }
-    },
-    "message": "Login successful"
-}
 ```
 
 ### 2. Enroll Student in a Course
