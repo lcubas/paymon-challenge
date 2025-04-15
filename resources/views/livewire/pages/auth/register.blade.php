@@ -34,7 +34,6 @@ new #[Layout('layouts.guest')] class extends Component
         $userValues = collect($validated)->except('phone')->toArray();
 
         event(new Registered($user = User::create($userValues)));
-
         app(RegisterLegalGuardianUseCase::class)->execute(new RegisterLegalGuardianDTO(
             name: $validated['name'],
             email: $validated['email'],
@@ -42,9 +41,9 @@ new #[Layout('layouts.guest')] class extends Component
             userId: $user->id,
         ));
 
-        Auth::login($user);
+        // Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirectIntended(default: route('login', absolute: false), navigate: true);
     }
 }; ?>
 

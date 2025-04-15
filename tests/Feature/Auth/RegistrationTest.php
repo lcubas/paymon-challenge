@@ -17,11 +17,11 @@ test('new users can register', function () {
         ->set('name', 'Test User')
         ->set('email', 'test@example.com')
         ->set('password', 'password')
-        ->set('password_confirmation', 'password');
+        ->set('password_confirmation', 'password')
+        ->set('phone', '0123456789');
 
     $component->call('register');
 
-    $component->assertRedirect(route('dashboard', absolute: false));
-
-    $this->assertAuthenticated();
+    $this->assertGuest();
+    $component->assertRedirect(route('login', absolute: false));
 });

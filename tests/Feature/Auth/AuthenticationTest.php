@@ -22,7 +22,7 @@ test('users can authenticate using the login screen', function () {
 
     $component
         ->assertHasNoErrors()
-        ->assertRedirect(route('dashboard', absolute: false));
+        ->assertRedirect(route('courses.index', absolute: false));
 
     $this->assertAuthenticated();
 });
@@ -66,7 +66,7 @@ test('users can logout', function () {
 
     $component
         ->assertHasNoErrors()
-        ->assertRedirect('/');
+        ->assertRedirect('/login');
 
     $this->assertGuest();
 });
